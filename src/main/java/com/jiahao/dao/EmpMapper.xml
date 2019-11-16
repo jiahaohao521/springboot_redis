@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiahao.dao.EmpMapper">
+  <cache type="com.jiahao.cache.MyCache"></cache>
+  <resultMap id="BaseResultMap" type="com.jiahao.bean.Emp">
+    <id column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="ename" jdbcType="VARCHAR" property="ename" />
+    <result column="bridhday" jdbcType="DATE" property="bridhday" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createtime" jdbcType="DATE" property="createtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    eid, ename, bridhday, updatetime, createtime
+  </sql>
+  <select id="selectByExample" parameterType="com.jiahao.bean.EmpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from emp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from emp
+    where eid = #{eid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from emp
+    where eid = #{eid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jiahao.bean.EmpExample">
+    delete from emp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jiahao.bean.Emp">
+    insert into emp (eid, ename, bridhday, 
+      updatetime, createtime)
+    values (#{eid,jdbcType=INTEGER}, #{ename,jdbcType=VARCHAR}, #{bridhday,jdbcType=DATE}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jiahao.bean.Emp">
+    insert into emp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        eid,
+      </if>
+      <if test="ename != null">
+        ename,
+      </if>
+      <if test="bridhday != null">
+        bridhday,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="ename != null">
+        #{ename,jdbcType=VARCHAR},
+      </if>
+      <if test="bridhday != null">
+        #{bridhday,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jiahao.bean.EmpExample" resultType="java.lang.Long">
+    select count(*) from emp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update emp
+    <set>
+      <if test="record.eid != null">
+        eid = #{record.eid,jdbcType=INTEGER},
+      </if>
+      <if test="record.ename != null">
+        ename = #{record.ename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bridhday != null">
+        bridhday = #{record.bridhday,jdbcType=DATE},
+      </if>
+      <if test="record.updatetime != null">
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update emp
+    set eid = #{record.eid,jdbcType=INTEGER},
+      ename = #{record.ename,jdbcType=VARCHAR},
+      bridhday = #{record.bridhday,jdbcType=DATE},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createtime = #{record.createtime,jdbcType=DATE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jiahao.bean.Emp">
+    update emp
+    <set>
+      <if test="ename != null">
+        ename = #{ename,jdbcType=VARCHAR},
+      </if>
+      <if test="bridhday != null">
+        bridhday = #{bridhday,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+    </set>
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jiahao.bean.Emp">
+    update emp
+    set ename = #{ename,jdbcType=VARCHAR},
+      bridhday = #{bridhday,jdbcType=DATE},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=DATE}
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+</mapper>
